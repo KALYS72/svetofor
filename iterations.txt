@@ -1,0 +1,1 @@
+Amount of iterations from 8 to 10 is: 115
