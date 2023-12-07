@@ -1,1 +1,1 @@
-Amount of iterations from 8 to 10 is: 115
+Amount of iterations from 10 to 17 is: 400
