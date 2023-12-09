@@ -13,6 +13,7 @@ def time(sec):
 def clock(sec):
     main = time(sec)
     return f"{main['h']:02d}:{main['min']:02d}:{main['sec']:02d}"
+
 def svetofor(g, y, r):
     import time
     import os
@@ -60,25 +61,18 @@ def svetofor(g, y, r):
     return f"Seconds in one iteration: {seconds_in_iteration}"
 
 
-def record(filename, title, data):
-    import csv
+def record(filename, title, data, delimiter=','):
     try:
         with open(filename, 'r', newline='') as file:
-            reader = csv.reader(file)
-            existing_data = list(reader)
+            existing_data = file.readlines()
     except FileNotFoundError:
         existing_data = []
-        
-    existing_data.append([title])
 
+    existing_data.append(f"{title}\n")
     existing_data.extend(data)
 
     with open(filename, 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerows(existing_data)
-
-
-
+        file.writelines(existing_data)
 
 
 start = int(input('Write your starting hour: '))
@@ -86,12 +80,10 @@ end = int(input('Write your ending hour: '))
 starting_hour = hours_to_sec(start)
 ending_hour = hours_to_sec(end)
 
-red_bb = 28    #seconds
+red_bb = 28    # seconds
 green_bb = 31
 yellow_bb = 3
 t_iteration = red_bb + green_bb + yellow_bb
-
-
 
 green_iter = []
 yellow_iter = []
@@ -101,18 +93,19 @@ cur_time = starting_hour
 while (time(cur_time))["h"] != end:
     start_g = cur_time
     cur_time += green_bb
-    green_iter.append(clock(start_g) + " - " + clock(cur_time))
+    green_iter.append(clock(start_g) + " - " + clock(cur_time) + "\n")
     start_y = cur_time
     cur_time += yellow_bb
-    yellow_iter.append(clock(start_y) + " - " + clock(cur_time))
+    yellow_iter.append(clock(start_y) + " - " + clock(cur_time) + "\n")
     start_r = cur_time
     cur_time += red_bb
-    red_iter.append(clock(start_r) + " - " + clock(cur_time))
+    red_iter.append(clock(start_r) + " - " + clock(cur_time) + "\n")
     iterations += 1
 
 record("color.csv", "Green", green_iter)
 record("color.csv", "Yellow", yellow_iter)
 record("color.csv", "Red", red_iter)
+
 
 with open("iterations.txt", 'w') as file:
     file.write(f"Amount of iterations from {start} to {end} is: {iterations}\n")
